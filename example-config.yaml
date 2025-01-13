@@ -83,11 +83,11 @@ ota:
 external_components:
   - source:
       type: git
-      url: https://github.com/muxa/esphome-micron-alarm
+      url: https://github.com/barhovajo/esphome-micron-alarm
     refresh: 1h
   - source:
       type: git
-      url: https://github.com/muxa/esphome-state-machine
+      url: https://github.com/barhovajo/esphome-state-machine
     refresh: 1h
 
 status_led:
@@ -103,7 +103,7 @@ micron:
   data_in_pin: 
     number: D2
     inverted: true
-  data_out_pin: D5
+  data_out_pin: D6
   update_interval: 300s
   connected:
     name: "${device_name} Connected"
@@ -255,7 +255,7 @@ switch:
 binary_sensor:
   - platform: gpio
     pin:
-      number: D6
+      number: D5
       inverted: true
     name: "${device_name} Siren Active"
     id: siren_active
