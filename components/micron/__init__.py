@@ -42,8 +42,11 @@ CONF_CONNECTED = "connected"
 CONF_M = "m"
 CONF_S1 = "s1"
 CONF_S2 = "s2"
+CONF_FAULT = "fault"
+CONF_NW_ARMED = "nwarmed"
+CONF_NW_UNSAFE = "nwunsafe"
 CONF_BEEP_1 = "beep1"
-CONF_BEEP_2 = "beep2"
+#CONF_BEEP_2 = "beep2"
 CONF_BEEP_3 = "beep3"
 
 CONF_ZONE_1 = "zone1"
@@ -51,6 +54,9 @@ CONF_ZONE_2 = "zone2"
 CONF_ZONE_3 = "zone3"
 CONF_ZONE_4 = "zone4"
 CONF_ZONE_5 = "zone5"
+CONF_ZONE_6 = "zone6"
+CONF_ZONE_7 = "zone7"
+CONF_ZONE_8 = "zone8"
 
 CONF_KEYPAD = "keypad"
 CONF_STATUS = "status"
@@ -75,13 +81,22 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_S2): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
+            cv.Optional(CONF_FAULT): binary_sensor.binary_sensor_schema(
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_NW_ARMED): binary_sensor.binary_sensor_schema(
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_NW_UNSAFE): binary_sensor.binary_sensor_schema(
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
             cv.Optional(CONF_BEEP_1): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_SOUND,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_BEEP_2): binary_sensor.binary_sensor_schema(
-                device_class = DEVICE_CLASS_SOUND,
-            ),
+            #cv.Optional(CONF_BEEP_2): binary_sensor.binary_sensor_schema(
+            #    device_class = DEVICE_CLASS_SOUND,
+            #),
             cv.Optional(CONF_BEEP_3): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_SOUND,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
@@ -103,6 +118,18 @@ CONFIG_SCHEMA = cv.All(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_ZONE_5): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_6): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_7): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_8): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
@@ -148,14 +175,25 @@ async def to_code(config):
     if CONF_S2 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_S2])
         cg.add(var.set_s2_binary_sensor(sens))
+    if CONF_FAULT in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_FAULT])
+        cg.add(var.set_fault_binary_sensor(sens))
+
+    if CONF_NW_ARMED in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_NW_ARMED])
+        cg.add(var.set_nw_armed_binary_sensor(sens))
+
+    if CONF_NW_UNSAFE in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_NW_UNSAFE])
+        cg.add(var.set_nw_unsafe_binary_sensor(sens))
 
     if CONF_BEEP_1 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_BEEP_1])
         cg.add(var.set_beep1_binary_sensor(sens))
 
-    if CONF_BEEP_2 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_BEEP_2])
-        cg.add(var.set_beep2_binary_sensor(sens))
+    # if CONF_BEEP_2 in config:
+    #     sens = await binary_sensor.new_binary_sensor(config[CONF_BEEP_2])
+    #     cg.add(var.set_beep2_binary_sensor(sens))
 
     if CONF_BEEP_3 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_BEEP_3])
@@ -180,6 +218,18 @@ async def to_code(config):
     if CONF_ZONE_5 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_5])
         cg.add(var.set_zone5_binary_sensor(sens))
+
+    if CONF_ZONE_6 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_6])
+        cg.add(var.set_zone6_binary_sensor(sens))
+    
+    if CONF_ZONE_7 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_7])
+        cg.add(var.set_zone7_binary_sensor(sens))
+    
+    if CONF_ZONE_8 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_8])
+        cg.add(var.set_zone8_binary_sensor(sens))
 
     if CONF_KEYPAD in config:
         sens = await text_sensor.new_text_sensor(config[CONF_KEYPAD])

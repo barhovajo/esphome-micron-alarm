@@ -1,14 +1,38 @@
 substitutions:
-  device_name: Alarm
+  device_name: "micron-alarm"
+  device_friendly_name: "Micron"
+  device_description: "Micron wifi elérés"
 
 esphome:
-  name: alarm
+  name: "${device_name}"
+  comment: "${device_description}"
+  friendly_name: "${device_friendly_name}"
+  min_version: 2024.11.0
+  name_add_mac_suffix: false
+
+
+#substitutions:
+#  device_name: Alarm
+
+#esphome:
+#  name: alarm
 
 esp8266:
   board: d1_mini
 
 wifi:
-  ap:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.1.238
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.1.1
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
+
+#  ap:
 
 captive_portal:
 
@@ -17,8 +41,8 @@ logger:
 
 # Enable Home Assistant API
 api:
-  encryption: 
-    key: !secret api_encryption_key
+  #encryption: 
+  #  key: !secret api_encryption_key
   services:
     - service: press_keys
       variables:
@@ -61,7 +85,7 @@ api:
       then:
       - logger.log: Panic
       - lambda: |-
-          id(alarm1).write(MICRON_KEYPAD_STAR | MICRON_KEYPAD_HASH);
+          id(alarm1).write(MICRON_KEYPAD_EMERGENCY);
     - service: transition    
       variables:
         input: string
@@ -84,10 +108,11 @@ external_components:
   - source:
       type: git
       url: https://github.com/barhovajo/esphome-micron-alarm
-    refresh: 1h
+      ref: micron-scorpion
+    refresh: 24h
   - source:
       type: git
-      url: https://github.com/barhovajo/esphome-state-machine
+      url: https://github.com/muxa/esphome-state-machine
     refresh: 1h
 
 status_led:
@@ -104,7 +129,7 @@ micron:
     number: D2
     inverted: true
   data_out_pin: D6
-  update_interval: 300s
+  update_interval: 30s
   connected:
     name: "${device_name} Connected"
     id: connected
@@ -163,6 +188,73 @@ micron:
     id: beep3
     entity_category: diagnostic
     internal: true
+
+  m:
+    name: "Hálózati feszültség OK"
+    id: mains
+    internal: true
+
+  fault:
+    name: "Hiba!"
+    id: fault
+    internal: true
+
+  nwarmed:
+    name: "Éjszakai élesítés aktív"
+    id: nwarmed
+    internal: true
+
+  nwunsafe:
+    name: "Mozgás az éjszakai zóná(k)ban"
+    id: nwunsafe
+    internal: true
+
+  zone1:
+    name: "Mozgás a konyhában, teraszajtónál"
+    id: zone1
+    internal: true
+
+  zone2:
+    name: "Mozgás a nappaliban"
+    id: zone2
+    internal: true
+
+  zone3:
+    name: "Mozgás a lépcsőházban (fent)"
+    id: zone3
+    internal: true
+
+  zone4:
+    name: "Mozgás a lépcsőházban (lent)"
+    id: zone4
+    internal: true
+
+  zone5:
+    name: "Zóna 5 (nincs bekötve)"
+    id: zone5
+    internal: true
+
+  zone6:
+    name: "Mozgás a gyerekszobában/hálószobában"
+    id: zone6
+    internal: true
+
+  zone7:
+    name: "Zóna 7 (nincs bekötve)"
+    id: zone7
+    internal: true
+
+  zone8:
+    name: "Tamper"
+    id: zone8
+    internal: true
+
+  keypad:
+    name: "Billentyűzet"
+    id: keypad
+  status:
+    name: "Státuszbitek"
+    id: status
 
 state_machine:
   - name: "${device_name} State Machine"
@@ -343,7 +435,16 @@ button:
     disabled_by_default: true
     on_press:
       - lambda: |-
-          id(alarm1).write(MICRON_KEYPAD_STAR | MICRON_KEYPAD_HASH);
+          id(alarm1).write(MICRON_KEYPAD_EMERGENCY);
+
+  - platform: template
+    name: "${device_name} night arm"
+    icon: "mdi:shield-alert"
+    entity_category: diagnostic
+    disabled_by_default: true
+    on_press:
+      - lambda: |-
+          id(alarm1).write(MICRON_KEYPAD_NIGHT_ARM);
 
   - platform: template
     name: "${device_name} Siren Ping"

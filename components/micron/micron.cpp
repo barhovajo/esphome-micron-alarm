@@ -23,6 +23,8 @@ namespace esphome
         case '0': return MICRON_KEYPAD_0;
         case '*': return MICRON_KEYPAD_STAR;
         case '#': return MICRON_KEYPAD_HASH;
+        case 'n': return MICRON_KEYPAD_NIGHT_ARM;
+        case 'e': return MICRON_KEYPAD_EMERGENCY;
       }
       return 0;
     }
@@ -202,6 +204,15 @@ namespace esphome
       LOG_BINARY_SENSOR("  ", "Zone 3", this->zone3_binary_sensor_);
       LOG_BINARY_SENSOR("  ", "Zone 4", this->zone4_binary_sensor_);
       LOG_BINARY_SENSOR("  ", "Zone 5", this->zone5_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 6", this->zone6_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 7", this->zone7_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 8", this->zone8_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Mains",  this->m_binary_sensor_    );
+      LOG_BINARY_SENSOR("  ", "Fault",  this->fault_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "S1",     this->s1_binary_sensor_   );
+      LOG_BINARY_SENSOR("  ", "S2",     this->s2_binary_sensor_   );
+      LOG_BINARY_SENSOR("  ", "NW armed", this->nw_armed_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "NW unsafe", this->nw_unsafe_binary_sensor_);
     }
 
     void MicronComponent::loop() {
@@ -218,6 +229,15 @@ namespace esphome
       if (this->s2_binary_sensor_) {
         this->s2_binary_sensor_->publish_state((this->store_.status & MICRON_S2_MASK) == MICRON_S2_MASK);
       }
+      if (this->fault_binary_sensor_) {
+        this->fault_binary_sensor_->publish_state((this->store_.status & MICRON_FAULT_MASK) == MICRON_FAULT_MASK);
+      }
+      if (this->nw_armed_binary_sensor_) {
+        this->nw_armed_binary_sensor_->publish_state((this->store_.status & MICRON_NW_ARMED_LED_MASK) == MICRON_NW_ARMED_LED_MASK);
+      }
+      if (this->nw_unsafe_binary_sensor_) {
+        this->nw_unsafe_binary_sensor_->publish_state((this->store_.status & MICRON_NW_UNSAFE_LED_MASK) == MICRON_NW_UNSAFE_LED_MASK);
+      }
 
       if (this->beep1_binary_sensor_) {
         this->beep1_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_1_MASK) == MICRON_KEY_BEEP_1_MASK);
@@ -225,9 +245,9 @@ namespace esphome
       if (this->beep2_binary_sensor_) {
         this->beep2_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_2_MASK) == MICRON_KEY_BEEP_2_MASK);
       }
-      if (this->beep3_binary_sensor_) {
-        this->beep3_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_3_MASK) == MICRON_KEY_BEEP_3_MASK);
-      }
+      //if (this->beep3_binary_sensor_) {
+      //  this->beep3_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_3_MASK) == MICRON_KEY_BEEP_3_MASK);
+      //}
 
       if (this->zone1_binary_sensor_) {
         this->zone1_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_1_MASK) == MICRON_ZONE_1_MASK);
@@ -244,7 +264,16 @@ namespace esphome
       if (this->zone5_binary_sensor_) {
         this->zone5_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_5_MASK) == MICRON_ZONE_5_MASK);
       }
-      
+      if (this->zone6_binary_sensor_) {
+        this->zone6_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_6_MASK) == MICRON_ZONE_6_MASK);
+      }
+      if (this->zone7_binary_sensor_) {
+        this->zone7_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_7_MASK) == MICRON_ZONE_7_MASK);
+      }
+      if (this->zone8_binary_sensor_) {
+        this->zone8_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_8_MASK) == MICRON_ZONE_8_MASK);
+      }
+
       if (this->keypad_text_sensor_ && this->command_dedupe_.next(this->store_.command) && this->store_.command != 0x00) {
         this->keypad_text_sensor_->publish_state(str_sprintf("0x%02x", this->store_.command));
       }
