@@ -54,7 +54,7 @@ namespace esphome
     static const uint16_t MICRON_ZONE_8_MASK = 0x0200;
     static const uint16_t MICRON_NW_ARMED_LED_MASK = 0x0400;
     static const uint16_t MICRON_NW_UNSAFE_LED_MASK = 0x0800; // This lights up, when there are moving in one of the night zones
-    static const uint16_t MICRON_FAILURE_MASK = 0x1000;       // Probably general failure, but I met it only when I disconnected the AC power
+    static const uint16_t MICRON_FAULT_MASK = 0x1000;         // Probably general failure, but I met it only when I disconnected the AC power
     static const uint16_t MICRON_M_MASK = 0x2000;
     static const uint16_t MICRON_S2_MASK = 0x4000;
     static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
