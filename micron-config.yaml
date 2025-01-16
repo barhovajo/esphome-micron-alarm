@@ -129,7 +129,7 @@ micron:
     number: D2
     inverted: true
   data_out_pin: D6
-  update_interval: 30s
+  update_interval: 15s
   connected:
     name: "${device_name} Connected"
     id: connected
@@ -159,7 +159,7 @@ micron:
   s1:
     name: "${device_name} S1"
     id: s1
-    internal: true
+    #internal: true
     on_multi_click:
     - timing:
         - ON for at most 70ms
@@ -187,71 +187,72 @@ micron:
     name: "${device_name} Beep 3 Raw"
     id: beep3
     entity_category: diagnostic
-    internal: true
+    #internal: true
 
   m:
     name: "Hálózati feszültség OK"
     id: mains
-    internal: true
+    #internal: true
 
   fault:
     name: "Hiba!"
     id: fault
-    internal: true
+    #internal: true
 
   nwarmed:
     name: "Éjszakai élesítés aktív"
     id: nwarmed
-    internal: true
+    #internal: true
 
   nwunsafe:
     name: "Mozgás az éjszakai zóná(k)ban"
     id: nwunsafe
-    internal: true
+    #internal: true
 
   zone1:
     name: "Mozgás a konyhában, teraszajtónál"
     id: zone1
-    internal: true
+    #internal: true
 
   zone2:
     name: "Mozgás a nappaliban"
     id: zone2
-    internal: true
+    #internal: true
 
   zone3:
     name: "Mozgás a lépcsőházban (fent)"
     id: zone3
-    internal: true
+    #internal: true
 
   zone4:
     name: "Mozgás a lépcsőházban (lent)"
     id: zone4
-    internal: true
+    #internal: true
 
   zone5:
     name: "Zóna 5 (nincs bekötve)"
     id: zone5
-    internal: true
+    #internal: true
 
   zone6:
     name: "Mozgás a gyerekszobában/hálószobában"
     id: zone6
-    internal: true
+    #internal: true
 
   zone7:
     name: "Zóna 7 (nincs bekötve)"
     id: zone7
-    internal: true
+    #internal: true
 
   zone8:
     name: "Tamper"
     id: zone8
-    internal: true
+    #internal: true
 
   keypad:
     name: "Billentyűzet"
     id: keypad
+  
   status:
     name: "Státuszbitek"
     id: status
@@ -316,7 +317,7 @@ sensor:
   - platform: adc
     pin: A0
     name: "${device_name} Battery Voltage"
-    update_interval: 1s
+    update_interval: 10s
     device_class: voltage
     icon: "mdi:battery"
     accuracy_decimals: 1
@@ -367,7 +368,7 @@ binary_sensor:
 
   - platform: template
     name: "${device_name} Beep 3"
-    internal: true
+    #internal: true
     entity_category: diagnostic
     device_class: sound    
     lambda: return id(beep3).state;

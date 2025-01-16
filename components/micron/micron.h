@@ -14,8 +14,8 @@ namespace esphome
     // The 24 periods last for 12ms, time without clock signal is 20 ms, the whole cycle is 32 ms.
 
     static const uint32_t MICRON_CLOCK_TIMEOUT_MS = 50;         //  50 ms
-    static const uint32_t MICRON_MIN_US = 100;                  // 100 us
-    static const uint32_t MICRON_MAX_MS = 30;                   //  30 ms
+    static const uint32_t MICRON_MIN_US = 200;                  // 100 us
+    static const uint32_t MICRON_MAX_MS = 18;                   //  30 ms
     static const uint32_t MICRON_MAX_COMMAND_DELAY_MS = 240;    // 240 ms
 
     static const uint8_t MICRON_PACKET_LEN = 3;
