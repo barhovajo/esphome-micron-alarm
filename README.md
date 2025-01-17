@@ -1,6 +1,6 @@
-# ESPHome Micron Lynx Alarm
+# ESPHome Micron Scorpion Alarm
 
-Control Micron Lynx alarm system from ESPHome. 
+Control Micron Scorpion alarm system from ESPHome. (forked from muxa's origin)
 
 ## Limitations
 
